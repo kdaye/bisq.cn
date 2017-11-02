@@ -10,8 +10,8 @@ plugins:
   - jekyll-sitemap
   - jekyll-multiple-languages-plugin
 languages:
-  - en
   - cn
+  - en
 exclude_from_localizations:
   - javascript
   - images
