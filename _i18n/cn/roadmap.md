@@ -22,13 +22,43 @@ Bisq路线图是一个会更新的文件，分享了Bisq团队的愿景和我们
  - Trezor支持
  - Windows代码签名
 
-### 版本 0.6
- - Bisq 权利放下组织 阶段 2
-
-### 版本 0.5.4
- - Bisq 权利放下组织 阶段 1
-
 ## 已发布
+
+### 版本 0.6
+版本 [November 16th 2017](https://github.com/bitsquare/bitsquare/releases/tag/v0.6.0)
+- 添加对Tor网桥和可插拔传输的支持 (https://github.com/bisq-network/exchange/issues/998)
+- Bisq开发人员提供比特币完整节点 (https://github.com/bisq-network/roles/issues/39) 以防止BitcoinJ漏洞(BitcoinJ is blindly following longest PoW chain and not checking consensus rule violations). That also avoids the privacy issues with bloom filters. (https://github.com/bisq-network/exchange/issues/999)
+- 添加账户年龄验证方案 (https://github.com/bisq-network/proposals/blob/master/payment-account-age-witness.adoc, https://github.com/bisq-network/exchange/issues/1000)
+- 减少下单费用 （DEFAULT_TAKER_FEE_IN_BASE_CUR）  0.003 BTC 降至 0.002 BTC ( 1 BTC 交易为基准)
+- 通过费用估算调整降低矿工费用 (using maxDelay 20 instead of 10 and taking average of 12 last fee results)
+- 按交易规模计算矿工费. Instead of using 600 bytes as estimation of trade fee tx we create a dummy tx to get the exact size id funds are on the wallet, otherwise we use 260 bytes for maker and 320 bytes for taker (deposit and payout tx are larger).
+- Reduce security deposit: DEFAULT_BUYER_SECURITY_DEPOSIT from 0.03 BTC to 0.01 BTC; MAX_BUYER_SECURITY_DEPOSIT from 0.2 BTC 0.05 BTC, MIN_BUYER_SECURITY_DEPOSIT from 0.001 BTC to 0.0005 BTC; SELLER_SECURITY_DEPOSIT from 0.01 BTC to 0.003 BTC
+- 使用新的交易限制应对BTC的高价格: Bank transfers: 0.25 BTC; Swish, OKPay, PerfectMoney, AliPay: 0.5 BTC; Altcoins 1 BTC (exception SiaFund as their price is about 3 BCT and it is not dividable, so we allow 4 BTC there)
+- 添加西联汇款
+- Show latest trade price in case no price from external market price providers is available. To be used only for informational purpose not for % based offers due price manipulation risks.
+- 在比特币测试网上启用Bisq DAO阶段1：BSQ成因分布，BSQ交易，用于支付交易费用的BSQ，带有发送，接收和tx列表屏幕的BSQ钱包，仪表板
+- 增加新的语言: 中文，匈牙利文，罗马尼亚文，俄文，法文，土耳其文
+- 添加新的数字货币: DECENT, Pranacoin, WACoins, ZenCash, Ellaism, Cryptonite, Terracoin, Internext, Particl
+- Add all missing countries (all global countries taken from https://restcountries.eu/rest/v2/all?fields=name;region;subregion;alpha2Code;languages)
+- Add OXT as BTC blockexplorer
+- Use new seed nodes and price relay nodes operated by different Bisq developers and bonded by BSQ
+- Use new more efficient data structure for tradeStatistcs objects
+- Add filter for arbitrators, seed nodes and price relay nodes
+- Change pw length restriction
+- Change name of IOP to "Internet Of People"
+- Remove DOGE as base currency (zero trade activity)
+- Reduce number of seed nodes for LTC and DASH (very low trade activity)
+- Removed never-traded altcoins: Advanced Internet Blocks (AIB), Anoncoin (ANC), Anti (ANTI), AquariusCoin (ARCO), Argentum (ARG), Augur (REP), Battlestars (BATL), BigUp (BIGUP), BitAUD (BITAUD), BitCHF (BITCHF), BitCNY (BITCNY), BitEUR (BITEUR), BitGBP (BITGBP), BitHKD (BITHKD), BitNZD (BITNZD), BitSEK (BITSEK), BitSGD (BITSGD), BitSYNQ (SYNQ), BitShares (BTS), BitUSD (BITUSD), Blackcoin (BLK), Clams (CLAM), CloakCoin (CLOAK), Comet (CMT), Creditbit (CRBIT), Crown (CRW), Crypto Bullion (CBX), DIBCOIN (DIBC), Digibyte (DGB), Digital Rupees (DRS), DigixDAO Tokens (DGD), EOS (EOS), EUR Tether (EURT), Emercoin (EMC), Eternity (ENT), Europecoin (ERC), EverGreenCoin (EGC), Factom (FCT), FairCoin (FAIR), FlorinCoin (FLO), GameCredits (GAME), Gemz (GEMZ), Groestlcoin (GRS), Gulden (NLG), HOdlcoin (HODL), HunCoin (HNC), I/O Coin (IOC), JPY Tether (JPYT), Janus (JNS), Jumbucks (JBS), LTBcoin (LTBC), Maker (MKR), MarteXcoin (MXT), Moin (MOIN), Myriadcoin (XMY), NEM (XEM), Nevacoin (NEVA), NuShares (NSR), OKCash (OK), Omni (OMNI), Opal (OPAL), Peercoin (PPC), Pinkcoin (PINK), PlatinumBar (XPTX), Plutons (PLU), PotCoin (POT), Primecoin (XPM), Radium (RADS), RealEst. Coin (REALEST), Ripple (XRP), Shift (SHIFT), Smileycoin (SMLY), SolarCoin (SLR), Steem Dollars (STEEMUSD), Stellar Lumens (XLM), StorjcoinX (SJCX), Stratis (STRAT), Swarm City Token (SWT), Syndicate (SYNX), Synereo (AMP), Triangles (TRI), USD Tether (USDT), VCoin (VCN), VPNCoin (VPN), Verge (XVG), VeriCoin (VRC), Waves (WAVES), Worldcoin (WDC), Xaurum (XAUR), YACCoin (YACC), YbCoin (YBC)
+- Many smaller improvements in the UI
+- Fix wrong date handling in trade statistics charts
+- Listen to bitcoin network for deposit and payout transaction in case the P2P message did not arrive
+- Support different keys for code signing in download-tool
+- Fix bug with missing MultiSigKey (findKeyFromPubKeyHash call was used instead of findKeyFromPubKey)
+- Fix missing persistence for trade statistic object in seed nodes
+- Fix but with offer sorting
+- Use smaller font and width for TAC window on very small screens
+- Use netlayer Tor library (https://github.com/JesusMcCloud/netlayer/)
+- Improved build system
 
 ### 版本 0.5.3
 Released [July 17th 2017](https://github.com/bitsquare/bitsquare/releases/tag/v0.5.3)
